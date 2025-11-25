@@ -1,0 +1,94 @@
+{
+  "title": "Quicksort — Divide, Choose Pivot, and Conquer",
+  "subtitle": "A friendly, step-by-step guide to Quicksort for programmers",
+  "author": "Champak Roy",
+  "brand_img": "me.jpg",
+  "whatsapp": "919999999999",
+
+  "introduction": "<p>Quicksort is a fast, commonly used sorting algorithm that uses divide-and-conquer. It picks a 'pivot', partitions the array into smaller and larger parts, then sorts those parts recursively. In practice, Quicksort is often the fastest simple comparison sort.</p>",
+
+  "keywords": ["quicksort", "sorting", "divide and conquer", "algorithms", "DSA"],
+
+  "importance": [
+    "Common in interview questions and competitive programming.",
+    "Foundation for understanding divide-and-conquer thinking.",
+    "Many real-world libraries use Quicksort variations for sorting."
+  ],
+
+  "explanation": "<p><b>Analogy:</b> Imagine students standing in a line sorted by height is required. Choose a student as a pivot. Ask all shorter students to stand to the left, taller to the right. Now repeat the process in each group until every group is sorted — that is Quicksort.</p><p>Key ideas: pivot selection, partitioning (rearranging elements around pivot), and recursive sorting of partitions. A good pivot gives average O(n log n). A poor pivot choice (like choosing the smallest/largest always) can lead to O(n²).</p>",
+
+  "pseudocode": "QUICKSORT(A, low, high)\n  if low < high\n    p = PARTITION(A, low, high)\n    QUICKSORT(A, low, p-1)\n    QUICKSORT(A, p+1, high)\n\nPARTITION(A, low, high)\n  pivot = A[high]\n  i = low - 1\n  for j from low to high-1\n    if A[j] <= pivot\n      i = i + 1\n      swap A[i] and A[j]\n  swap A[i+1] and A[high]\n  return i+1",
+
+  "dryrun": [
+    {
+      "step": 1,
+      "variables": "A = [7, 2, 1, 6, 8, 5, 3, 4]; low=0; high=7; pivot=A[7]=4",
+      "explanation": "Partition around pivot 4: elements <=4 go left, >4 go right."
+    },
+    {
+      "step": 2,
+      "variables": "After partition: A = [2,1,3,4,8,5,7,6]; pivot index p = 3",
+      "explanation": "Pivot 4 is placed at index 3. Left partition [2,1,3], right partition [8,5,7,6]."
+    },
+    {
+      "step": 3,
+      "variables": "Sort left partition low=0,high=2; pick pivot=3",
+      "explanation": "Partition left → [2,1,3] becomes [1,2,3] after recursive calls."
+    },
+    {
+      "step": 4,
+      "variables": "Sort right partition low=4,high=7; pick pivot=6",
+      "explanation": "Right partition [8,5,7,6] becomes [5,6,7,8] after recursion."
+    },
+    {
+      "step": 5,
+      "variables": "Final array",
+      "explanation": "[1,2,3,4,5,6,7,8]"
+    }
+  ],
+
+  "complexity": {
+    "best": "O(n log n) — balanced partitions",
+    "average": "O(n log n)",
+    "worst": "O(n^2) — extremely unbalanced partitions",
+    "space": "O(log n) average recursion; O(n) worst-case recursion depth"
+  },
+
+  "codes": {
+    "python": "def quicksort(arr, low=0, high=None):\n    if high is None:\n        high = len(arr)-1\n    if low < high:\n        p = partition(arr, low, high)\n        quicksort(arr, low, p-1)\n        quicksort(arr, p+1, high)\n\ndef partition(arr, low, high):\n    pivot = arr[high]\n    i = low - 1\n    for j in range(low, high):\n        if arr[j] <= pivot:\n            i += 1\n            arr[i], arr[j] = arr[j], arr[i]\n    arr[i+1], arr[high] = arr[high], arr[i+1]\n    return i+1\n\n# Example\nif __name__ == '__main__':\n    a = [7,2,1,6,8,5,3,4]\n    quicksort(a)\n    print(a)",
+
+    "javascript": "function quicksort(arr, low = 0, high = arr.length - 1) {\n  if (low < high) {\n    const p = partition(arr, low, high);\n    quicksort(arr, low, p - 1);\n    quicksort(arr, p + 1, high);\n  }\n}\n\nfunction partition(arr, low, high) {\n  const pivot = arr[high];\n  let i = low - 1;\n  for (let j = low; j < high; j++) {\n    if (arr[j] <= pivot) {\n      i++;\n      [arr[i], arr[j]] = [arr[j], arr[i]];\n    }\n  }\n  [arr[i+1], arr[high]] = [arr[high], arr[i+1]];\n  return i + 1;\n}\n\n// Example\nconst a = [7,2,1,6,8,5,3,4];\nquicksort(a);\nconsole.log(a);",
+
+    "java": "public class Quicksort {\n  public static void quicksort(int[] a, int low, int high) {\n    if (low < high) {\n      int p = partition(a, low, high);\n      quicksort(a, low, p-1);\n      quicksort(a, p+1, high);\n    }\n  }\n  public static int partition(int[] a, int low, int high) {\n    int pivot = a[high];\n    int i = low - 1;\n    for (int j = low; j < high; j++) {\n      if (a[j] <= pivot) {\n        i++;\n        int tmp = a[i]; a[i] = a[j]; a[j] = tmp;\n      }\n    }\n    int tmp = a[i+1]; a[i+1] = a[high]; a[high] = tmp;\n    return i+1;\n  }\n  public static void main(String[] args) {\n    int[] a = {7,2,1,6,8,5,3,4};\n    quicksort(a, 0, a.length-1);\n    for (int x: a) System.out.print(x + \" \");\n  }\n}",
+
+    "c": "#include <stdio.h>\nvoid swap(int *a, int *b){ int t=*a; *a=*b; *b=t; }\nint partition(int a[], int low, int high){\n  int pivot = a[high], i = low - 1;\n  for(int j = low; j < high; j++){\n    if(a[j] <= pivot){ i++; swap(&a[i], &a[j]); }\n  }\n  swap(&a[i+1], &a[high]);\n  return i+1;\n}\nvoid quicksort(int a[], int low, int high){\n  if(low < high){\n    int p = partition(a, low, high);\n    quicksort(a, low, p-1);\n    quicksort(a, p+1, high);\n  }\n}\nint main(){\n  int a[] = {7,2,1,6,8,5,3,4};\n  int n = 8;\n  quicksort(a, 0, n-1);\n  for(int i=0;i<n;i++) printf(\"%d \", a[i]);\n  return 0;\n}"
+  },
+
+  "illustration": "https://placehold.co/800x300?text=Quicksort+Illustration",
+
+  "demo_html": "<div style=\"padding:10px;border:1px dashed #ddd\"><strong>Demo placeholder:</strong> Add an interactive Quicksort visualizer here.</div>",
+
+  "mcqs": [
+    {
+      "q": "What is average-case time complexity of Quicksort?",
+      "options": ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
+      "ans": 1,
+      "explanation": "Average-case Quicksort runs in O(n log n) when partitions are reasonably balanced."
+    },
+    {
+      "q": "Which step places the pivot in its final sorted position?",
+      "options": ["Recursion", "Partition", "Swap pass", "Merge"],
+      "ans": 1,
+      "explanation": "Partition places the pivot in the correct position."
+    }
+  ],
+
+  "exercises": [
+    "Implement Quicksort using random pivot selection.",
+    "Dry-run Quicksort on [5,3,8,4,2] using last-element pivot.",
+    "Modify Quicksort to use Hoare partitioning."
+  ],
+
+  "playlist": null,
+  "autoplay_playlist": false
+}
